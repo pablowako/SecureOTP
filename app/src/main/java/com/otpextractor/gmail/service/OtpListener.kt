@@ -17,6 +17,8 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.otpextractor.secureotp.OtpExtractorApp
 import com.otpextractor.secureotp.R
+import com.otpextractor.secureotp.utils.AppFilterRepository
+import com.otpextractor.secureotp.utils.AppFilterState
 import com.otpextractor.secureotp.utils.OtpExtractor
 import com.otpextractor.secureotp.utils.PreferenceManager
 import kotlinx.coroutines.*
@@ -24,6 +26,7 @@ import kotlinx.coroutines.*
 class OtpListener : NotificationListenerService() {
 
     private lateinit var prefManager: PreferenceManager
+    private lateinit var filterRepo: AppFilterRepository
     private val processedNotifications = mutableSetOf<String>()
     private val serviceScope = CoroutineScope(Dispatchers.Default + SupervisorJob())
     private var wakeLock: PowerManager.WakeLock? = null
@@ -31,7 +34,8 @@ class OtpListener : NotificationListenerService() {
     override fun onCreate() {
         super.onCreate()
         prefManager = PreferenceManager(this)
-        
+        filterRepo = AppFilterRepository(this)
+
         // Initialize WakeLock for efficient battery usage
         val powerManager = getSystemService(Context.POWER_SERVICE) as PowerManager
         wakeLock = powerManager.newWakeLock(
@@ -83,8 +87,18 @@ class OtpListener : NotificationListenerService() {
 
                     Log.d(TAG, "Notification content from ${sbn.packageName}: $fullText")
 
-                    // Extract OTP with context
-                    val otp = OtpExtractor.extractOtp(fullText)
+                    // Check app filter state
+                    val filterState = filterRepo.getState(sbn.packageName)
+                    if (filterState == AppFilterState.BLACKLISTED) {
+                        Log.d(TAG, "Skipping blacklisted app: ${sbn.packageName}")
+                        return@launch
+                    }
+
+                    // Extract OTP — aggressive mode for whitelisted apps
+                    val otp = when (filterState) {
+                        AppFilterState.WHITELISTED -> OtpExtractor.extractOtpAggressive(fullText)
+                        else -> OtpExtractor.extractOtp(fullText)
+                    }
                     if (otp != null) {
                         Log.d(TAG, "OTP found: $otp from ${sbn.packageName}")
                         processedNotifications.add(notificationKey)

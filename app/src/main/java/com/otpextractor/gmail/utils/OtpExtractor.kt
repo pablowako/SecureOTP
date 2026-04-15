@@ -257,6 +257,26 @@ object OtpExtractor {
     }
 
     /**
+     * Aggressive OTP extraction for whitelisted apps.
+     * Tries standard extraction first, then falls back to broader patterns
+     * (short numeric codes, uppercase letter codes like Cl@ve).
+     */
+    fun extractOtpAggressive(text: String): String? {
+        // Try standard patterns first
+        extractOtp(text)?.let { return it }
+
+        // Short numeric codes (3+ digits)
+        Regex("\\b(\\d{3,8})\\b").find(text)
+            ?.let { return it.groupValues[1] }
+
+        // Uppercase letter codes (Cl@ve style)
+        Regex("\\b([A-Z]{3,6})\\b").find(text)
+            ?.let { return it.groupValues[1] }
+
+        return null
+    }
+
+    /**
      * Extracts all potential OTPs from text (for debugging/testing)
      */
     fun extractAllPotentialOtps(text: String): List<String> {
