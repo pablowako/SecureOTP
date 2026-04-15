@@ -110,6 +110,10 @@ class MainActivity : AppCompatActivity() {
             openGmailOptimization()
         }
 
+        binding.btnAppFilters.setOnClickListener {
+            startActivity(Intent(this, AppFilterActivity::class.java))
+        }
+
         setupWarningBanner()
     }
 

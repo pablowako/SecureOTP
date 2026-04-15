@@ -15,4 +15,13 @@
     <string name="battery_optimization_title">🔋 Battery Optimization</string>
     <string name="battery_optimization_desc">Efficient background processing - minimal battery usage</string>
     <string name="supported_apps">Supports: SMS, Email, Banking, Social Media &amp; more</string>
+    <string name="app_filter_info_title">Per-App OTP Detection</string>
+    <string name="app_filter_info_desc">Off = ignore this app entirely\nAuto = standard OTP detection (default)\nMax = aggressive detection for apps that use short numeric or letter-only codes</string>
+    <string name="app_filter_loading">Loading installed apps…</string>
+    <string name="app_filter_search_hint">Search apps…</string>
+    <string-array name="app_filter_states">
+        <item>Auto</item>
+        <item>Off</item>
+        <item>Max</item>
+    </string-array>
 </resources>

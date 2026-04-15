@@ -152,6 +152,20 @@
 
     </com.google.android.material.card.MaterialCardView>
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnAppFilters"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="App Filters"
+        android:textAllCaps="false"
+        android:layout_marginTop="16dp"
+        style="@style/Widget.Material3.Button.TonalButton"
+        app:icon="@drawable/ic_filter_list"
+        app:iconGravity="start"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cardService" />
+
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardInfo"
         android:layout_width="0dp"
@@ -162,7 +176,7 @@
         app:cardBackgroundColor="#E3F2FD"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/cardService">
+        app:layout_constraintTop_toBottomOf="@id/btnAppFilters">
 
         <LinearLayout
             android:layout_width="match_parent"

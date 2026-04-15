@@ -9,8 +9,12 @@
     <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
     <uses-permission android:name="android.permission.VIBRATE" />
 
-    <!-- Package visibility for Gmail detection (Android 11+) -->
+    <!-- Package visibility for app filter list and Gmail detection (Android 11+) -->
     <queries>
+        <intent>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent>
         <package android:name="com.google.android.gm" />
         <package android:name="com.google.android.gm.lite" />
     </queries>
@@ -42,6 +46,13 @@
             android:name=".GmailOptimizationActivity"
             android:exported="false"
             android:label="Gmail Optimization"
+            android:parentActivityName=".MainActivity" />
+
+        <!-- App Filter Activity -->
+        <activity
+            android:name=".AppFilterActivity"
+            android:exported="false"
+            android:label="App Filters"
             android:parentActivityName=".MainActivity" />
 
         <!-- New OTP Listener Service -->
